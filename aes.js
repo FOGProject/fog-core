@@ -46,15 +46,11 @@ aes.decrypt = function (key, blob, padding, cb) {
 }
 
 aes.generateKey = function(cb) {
-  forge.random.getBytes(32, function(err, bytes) {
-    cb(err, bytes);
-  });
+  forge.random.getBytes(32, cb);
 }
 
 aes.generateIV = function(cb) {
-  forge.random.getBytes(16, function(err, bytes) {
-    cb(err, bytes);
-  });
+  forge.random.getBytes(16, cb);
 }
 
 module.exports = aes;
