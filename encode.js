@@ -2,7 +2,7 @@ var forge  = require('node-forge');
 var async  = require('async');
 var encode = {};
 
-var encodeHexSync  = function (bytes) {
+var encodeHexSync = function (bytes) {
   return forge.util.bytesToHex(bytes);
 }
 encode.hex = async.asyncify(encodeHexSync);
