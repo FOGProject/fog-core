@@ -34,7 +34,6 @@ aes.decrypt = async.asyncify(decryptSync);
 aes.generateKey = function(cb) {
   forge.random.getBytes(32, function(err, key) {
     if (err) { return cb(err); }
-
     encode.hex(key, function(err, hexKey) {
       cb(err, hexKey);
     });
