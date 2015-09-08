@@ -3,18 +3,13 @@ var async = require('async');
 var aes   = {};
 
 // Encrypt a message using AES with the given padding
-var encryptSync = function(key, data, padding) {
-  var iv = forge.random.getBytesSync(16);
+var encryptSync = function(iv, key, data, padding) {
   var cipher = forge.cipher.createCipher(padding, key);
 
   cipher.start({iv: iv});
   cipher.update(forge.util.createBuffer(data));
   cipher.finish();
-
-  var encrypted = {};
-  encrypted.output = cipher.output;
-  encrypted.iv = iv;
-  return encrypted;
+  return cipher.output;
 }
 aes.encrypt = async.asyncify(encryptSync);
 
@@ -29,7 +24,7 @@ var decryptSync = function(iv, key, data, padding) {
   decipher.update(byteBuffer);
   decipher.finish();
 
-  return decipher.output;
+  return decipher.output.toHex();
 }
 aes.decrypt = async.asyncify(decryptSync);
 
