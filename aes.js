@@ -1,49 +1,37 @@
 var forge = require('node-forge');
+var async = require('async');
 var aes   = {};
 
 // Encrypt a message using AES with the given padding
-aes.encrypt = function(key, message, padding, cb) {
-  aes.generateIV(function(err, iv) {
-    if (err) {
-      cb(err);
-      return;
-    }
-    var cipher = forge.cipher.createDecipher(padding, key);
+var encryptSync = function(key, data, padding) {
+  var iv = forge.random.getBytesSync(16);
+  var cipher = forge.cipher.createCipher(padding, key);
 
-    cipher.start({iv: iv});
-    cipher.update(forge.util.createBuffer(message));
-    cipher.finish(function(err) {
-      if (err) {
-        cb(err);
-        return;
-      }
+  cipher.start({iv: iv});
+  cipher.update(forge.util.createBuffer(data));
+  cipher.finish();
 
-      var results = {};
-      results.data = cipher.output.toHex();
-      results.iv = iv;
-
-      cb(null, results);
-    });
-  });
+  var encrypted = {};
+  encrypted.output = cipher.output;
+  encrypted.iv = iv;
+  return encrypted;
 }
+aes.encrypt = async.asyncify(encryptSync);
 
 // Decrypt an AES message with the given padding
 // blob contains .iv and .data
 // Returns the decrypted message
-aes.decrypt = function(key, blob, padding, cb) {
+var decryptSync = function(iv, key, data, padding) {
   var decipher   = forge.cipher.createDecipher(padding, key);
-  var byteBuffer = forge.util.createBuffer(blob.data);
+  var byteBuffer = forge.util.createBuffer(data);
 
-  decipher.start({iv: blob.iv });
+  decipher.start({iv: iv });
   decipher.update(byteBuffer);
-  decipher.finish(function(err) {
-    if (err) {
-      cb(err, null);
-      return;
-    }
-    cb(null, decipher.output.toString());
-  });
+  decipher.finish();
+
+  return decipher.output;
 }
+aes.decrypt = async.asyncify(decryptSync);
 
 aes.generateKey = function(cb) {
   forge.random.getBytes(32, cb);
