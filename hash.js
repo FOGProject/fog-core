@@ -84,4 +84,12 @@ hash.file.sha512 = function(file) {
   });
 }
 
+var hmacSync = function(type, key, data) {
+  var hmac = forge.hmac.create();
+  hmac.start(type, key);
+  hmac.update(data);
+  return hmac.digest().toHex();
+}
+hash.hmac = async.asyncify(hmacSync);
+
 module.exports = hash;
