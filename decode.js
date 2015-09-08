@@ -2,19 +2,19 @@ var forge  = require('node-forge');
 var async  = require('async');
 var decode = {};
 
-var decodeHexSync = function(encoded) {
+decode.hexSync = function(encoded) {
   return forge.util.hexToBytes(encoded);
 }
-decode.hex = async.asyncify(decodeHexSync);
+decode.hex = async.asyncify(decode.hexSync);
 
-var decodeBase64Sync = function(encoded) {
+decode.base64Sync = function(encoded) {
   return forge.util.decode64(encoded);
 }
-decode.base64 = async.asyncify(decodeBase64Sync);
+decode.base64 = async.asyncify(decode.base64Sync);
 
-var decodeUtf8Sync = function(encoded) {
+decode.utf8Sync = function(encoded) {
   return forge.util.decodeUtf8(encoded);
 }
-decode.utf8 = async.asyncify(decodeUtf8Sync);
+decode.utf8 = async.asyncify(decode.utf8Sync);
 
 module.exports = decode;

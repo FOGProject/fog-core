@@ -4,9 +4,11 @@ var decode = require('./decode.js');
 var async  = require('async');
 var aes    = {};
 
-var encryptSync = function(iv, key, data, padding) {
-  var cipher = forge.cipher.createCipher(padding, key);
+var encryptSync = function(hexIV, hexKey, data, padding) {
+  var iv  = decode.hexSync(hexIV);
+  var key = decode.hexSync(hexKey);
 
+  var cipher = forge.cipher.createCipher(padding, key);
   cipher.start({iv: iv});
   cipher.update(forge.util.createBuffer(data));
   cipher.finish();
@@ -14,7 +16,10 @@ var encryptSync = function(iv, key, data, padding) {
 }
 aes.encrypt = async.asyncify(encryptSync);
 
-var decryptSync = function(iv, key, data, padding) {
+var decryptSync = function(hexIV, hexKey, data, padding) {
+  var iv  = decode.hex(hexIV);
+  var key = decode.hex(hexKey);
+
   var decipher   = forge.cipher.createDecipher(padding, key);
   var byteBuffer = forge.util.createBuffer(data);
 
