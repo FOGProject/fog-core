@@ -2,9 +2,9 @@ var forge = require('node-forge');
 var aes   = {};
 
 // Encrypt a message using AES with the given padding
-aes.encrypt = function (key, message, padding, cb) {
+aes.encrypt = function(key, message, padding, cb) {
   aes.generateIV(function(err, iv) {
-    if(err) {
+    if (err) {
       cb(err);
       return;
     }
@@ -13,7 +13,7 @@ aes.encrypt = function (key, message, padding, cb) {
     cipher.start({iv: iv});
     cipher.update(forge.util.createBuffer(message));
     cipher.finish(function(err) {
-      if(err) {
+      if (err) {
         cb(err);
         return;
       }
@@ -30,14 +30,14 @@ aes.encrypt = function (key, message, padding, cb) {
 // Decrypt an AES message with the given padding
 // blob contains .iv and .data
 // Returns the decrypted message
-aes.decrypt = function (key, blob, padding, cb) {
+aes.decrypt = function(key, blob, padding, cb) {
   var decipher   = forge.cipher.createDecipher(padding, key);
   var byteBuffer = forge.util.createBuffer(blob.data);
 
   decipher.start({iv: blob.iv });
   decipher.update(byteBuffer);
   decipher.finish(function(err) {
-    if(err) {
+    if (err) {
       cb(err, null);
       return;
     }

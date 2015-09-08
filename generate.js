@@ -5,13 +5,11 @@ var uuidGen  = require('uuid');
 var generate = {};
 
 
-// =============================================================================
-// create uuid and verify against the collection to make sure is unique
-// =============================================================================
-generate.uuid = function (coll, cb) {
+// Create uuid and verify against the collection to make sure is unique
+generate.uuid = function(coll, cb) {
   var newUUID = uuidGen.v1();
-  coll.find({uid:newUUID}).exec(function doCB(err, found) {
-    if (found.name == null){
+  coll.find({uid: newUUID}).exec(function doCB(err, found) {
+    if (found.name == null) {
       cb(newUUID);
     } else {
       generate.uuid(coll,cb);
@@ -26,10 +24,11 @@ generate.bytes = function(size, cb) {
   });
 }
 
-// TODO: Look into secure generation, possibly collecting entropy and then getting random bytes,
-// and linking them to a string of alpha-numeric characters
+// TODO: Look into secure generation, possibly collecting entropy
+// then getting random bytes, and linking them to a string of alpha-numeric
+// characters
 var genPasswordSync = function(length) {
-  return chance.string({length:length});
+  return chance.string({length: length});
 }
 generate.password = async.asyncify(genPasswordSync);
 
