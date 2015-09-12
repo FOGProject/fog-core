@@ -9,14 +9,13 @@ var generate = {};
 generate.uuid = function(coll, cb) {
   var newUUID = uuidGen.v1();
   coll.find({uid: newUUID}).exec(function doCB(err, found) {
-    if (found.name == null) {
+    if (found.name === null) {
       cb(newUUID);
     } else {
       generate.uuid(coll,cb);
     }
   });
 };
-
 
 generate.bytes = function(size, cb) {
   forge.random.getBytes(size, function(err, bytes) {
