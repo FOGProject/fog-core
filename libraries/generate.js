@@ -2,6 +2,7 @@ var forge    = require('node-forge');
 var async    = require('async');
 var chance   = require('chance').Chance();
 var uuidGen  = require('uuid');
+var encode   = require('./encode.js');
 var generate = {};
 
 
@@ -20,6 +21,15 @@ generate.uuid = function(coll, cb) {
 generate.bytes = function(size, cb) {
   forge.random.getBytes(size, function(err, bytes) {
     cb(err, bytes);
+  });
+};
+
+generate.hexBytes = function(size, cb) {
+  generate.bytes(size, function(err, bytes) {
+    if (err) { return cb(err); }
+    encode.hex(bytes, function(err, hexBytes) {
+      cb(err, hexBytes);
+    });
   });
 };
 

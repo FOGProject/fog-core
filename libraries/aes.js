@@ -1,8 +1,9 @@
-var forge  = require('node-forge');
-var encode = require('./encode.js');
-var decode = require('./decode.js');
-var async  = require('async');
-var aes    = {};
+var forge    = require('node-forge');
+var encode   = require('./encode.js');
+var decode   = require('./decode.js');
+var generate = require('./generate.js');
+var async    = require('async');
+var aes      = {};
 
 var encryptSync = function(hexIV, hexKey, data, padding) {
   var iv  = decode.hexSync(hexIV);
@@ -32,21 +33,11 @@ var decryptSync = function(hexIV, hexKey, data, padding) {
 aes.decrypt = async.asyncify(decryptSync);
 
 aes.generateKey = function(cb) {
-  forge.random.getBytes(32, function(err, key) {
-    if (err) { return cb(err); }
-    encode.hex(key, function(err, hexKey) {
-      cb(err, hexKey);
-    });
-  });
+  generate.hexBytes(32, cb);
 };
 
 aes.generateIV = function(cb) {
-  forge.random.getBytes(16, function(err, iv) {
-    if (err) { return cb(err); }
-    encode.hex(iv, function(err, hexIV) {
-      cb(err, hexIV);
-    });
-  });
+  generate.hexBytes(16, cb);
 };
 
 module.exports = aes;
