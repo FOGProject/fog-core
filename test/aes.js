@@ -1,6 +1,6 @@
 var assert = require('assert');
 var async  = require('async');
-var aes    = require('../api/core/aes.js')
+var aes    = require('../libraries/aes.js')
 
 describe('aes#roundTrip', function() {
   it('should aes encrypt and then decrypt data', function(done) {
