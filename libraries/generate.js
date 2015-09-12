@@ -22,14 +22,14 @@ generate.bytes = function(size, cb) {
   forge.random.getBytes(size, function(err, bytes) {
     cb(err, bytes);
   });
-}
+};
 
 // TODO: Look into secure generation, possibly collecting entropy
 // then getting random bytes, and linking them to a string of alpha-numeric
 // characters
 var genPasswordSync = function(length) {
   return chance.string({length: length});
-}
+};
 generate.password = async.asyncify(genPasswordSync);
 
 module.exports = generate;

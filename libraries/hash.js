@@ -10,7 +10,7 @@ hash.file  = {};
 var hashDataSync = function(md, data) {
   md.update(data);
   return md.digest().toHex();
-}
+};
 var hashData = async.asyncify(hashDataSync);
 
 var hashFileSync = function(md, file) {
@@ -20,7 +20,7 @@ var hashFileSync = function(md, file) {
   stream.on('end', function() {
     return md.digest().toHex();
   });
-}
+};
 var hashFile = async.asyncify(hashFileSync);
 
 // =============================================================================

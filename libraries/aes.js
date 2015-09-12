@@ -13,7 +13,7 @@ var encryptSync = function(hexIV, hexKey, data, padding) {
   cipher.update(forge.util.createBuffer(data));
   cipher.finish();
   return cipher.output.toHex();
-}
+};
 aes.encrypt = async.asyncify(encryptSync);
 
 var decryptSync = function(hexIV, hexKey, data, padding) {
@@ -28,7 +28,7 @@ var decryptSync = function(hexIV, hexKey, data, padding) {
   decipher.finish();
 
   return decipher.output.toHex();
-}
+};
 aes.decrypt = async.asyncify(decryptSync);
 
 aes.generateKey = function(cb) {
@@ -38,7 +38,7 @@ aes.generateKey = function(cb) {
       cb(err, hexKey);
     });
   });
-}
+};
 
 aes.generateIV = function(cb) {
   forge.random.getBytes(16, function(err, iv) {
@@ -47,6 +47,6 @@ aes.generateIV = function(cb) {
       cb(err, hexIV);
     });
   });
-}
+};
 
 module.exports = aes;
