@@ -1,5 +1,4 @@
 var forge    = require('node-forge');
-var encode   = require('./encode.js');
 var decode   = require('./decode.js');
 var generate = require('./generate.js');
 var async    = require('async');
