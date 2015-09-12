@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "async": "^1.4.2",
+    "chance": "^0.7.7",
+    "fs": "0.0.2",
+    "mocha": "^2.2.5",
+    "node-forge": "^0.6.34",
+    "path": "^0.11.14",
+    "recursive-readdir": "^1.2.1",
+    "uuid": "^2.0.1"
+  },
+  "name": "fog-core",
+  "private": true,
+  "version": "0.0.1",
+  "description": "core libraries for fog",
+  "keywords": [],
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/FOGProject/fog-core.git"
+  },
+  "author": "FOG Project",
+  "license": "GPL v3"
+}
