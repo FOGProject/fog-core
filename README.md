@@ -1,5 +1,5 @@
 # fog-core
-Provides core API for all nodejs aspects of fog-too/badges/coverage
+Provides API for any NodeJS application use in fog-too. API should mimic Zazzles.
 
 [![Build Status](https://travis-ci.org/FOGProject/fog-core.svg?branch=master)](https://travis-ci.org/FOGProject/fog-core)
 [![Test Coverage](https://codeclimate.com/github/FOGProject/fog-too/badges/coverage.svg)](https://codeclimate.com/github/FOGProject/fog-too/coverage)
