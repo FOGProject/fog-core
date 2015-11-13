@@ -4,11 +4,11 @@ var generate = require('./generate.js');
 var async    = require('async');
 var aes      = {};
 
-var encryptSync = function(hexIV, hexKey, data, padding) {
+var encryptSync = function(hexIV, hexKey, data, cipher) {
   var iv  = decode.hexSync(hexIV);
   var key = decode.hexSync(hexKey);
 
-  var cipher = forge.cipher.createCipher(padding, key);
+  var cipher = forge.cipher.createCipher(cipher, key);
   cipher.start({iv: iv});
   cipher.update(forge.util.createBuffer(data));
   cipher.finish();
@@ -16,11 +16,11 @@ var encryptSync = function(hexIV, hexKey, data, padding) {
 };
 aes.encrypt = async.asyncify(encryptSync);
 
-var decryptSync = function(hexIV, hexKey, data, padding) {
+var decryptSync = function(hexIV, hexKey, data, cipher) {
   var iv  = decode.hexSync(hexIV);
   var key = decode.hexSync(hexKey);
 
-  var decipher   = forge.cipher.createDecipher(padding, key);
+  var decipher   = forge.cipher.createDecipher(cipher, key);
   var byteBuffer = forge.util.createBuffer(data);
 
   decipher.start({iv: iv });
