@@ -1,10 +1,9 @@
 var forge    = require('node-forge');
 var async    = require('async');
-var chance   = require('chance').Chance();
+var pwGen    = require('password-generator');
 var uuidGen  = require('uuid');
 var encode   = require('./encode.js');
 var generate = {};
-
 
 // Create uuid and verify against the collection to make sure is unique
 generate.uuid = function(coll, cb) {
@@ -33,11 +32,8 @@ generate.hexBytes = function(size, cb) {
   });
 };
 
-// TODO: Look into secure generation, possibly collecting entropy
-// then getting random bytes, and linking them to a string of alpha-numeric
-// characters
 var genPasswordSync = function(length) {
-  return chance.string({length: length});
+  pwGen.generatePassword(length, false);
 };
 generate.password = async.asyncify(genPasswordSync);
 
