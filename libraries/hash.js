@@ -14,12 +14,13 @@ var hashDataSync = function(md, data) {
 var hashData = async.asyncify(hashDataSync);
 
 var hashFileSync = function(md, file) {
-  var stream = fs.ReadStream(file);
-
-  stream.on('data', function(data) { md.update(data); });
-  stream.on('end', function() {
-    return md.digest().toHex();
-  });
+  // Get a base64 version of the file
+  // and give it to forge to obtain a
+  // forge Buffer
+  var buf64 = fs.readFileSync(file).toString('base64');
+  var fBuf = forge.util.decode64(buf64);
+  md.update(fBuf);
+  return md.digest().toHex();
 };
 var hashFile = async.asyncify(hashFileSync);
 
@@ -71,6 +72,5 @@ hash.file.hmac = function(type, key, file, cb) {
   hmac.start(type, key);
   hashFile(hmac, file, cb);
 };
-
 
 module.exports = hash;

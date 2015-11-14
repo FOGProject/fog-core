@@ -1,6 +1,6 @@
 var assert = require('assert');
 var async  = require('async');
-var decode = require('../libraries/decode.js')
+var decode = require('../libraries/decode.js');
 
 describe('decode#hex', function() {
   it('should hex decode test vectors', function(done) {

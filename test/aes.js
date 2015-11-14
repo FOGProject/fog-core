@@ -1,6 +1,6 @@
 var assert = require('assert');
 var async  = require('async');
-var aes    = require('../libraries/aes.js')
+var aes    = require('../libraries/aes.js');
 
 describe('aes#generateKey', function() {
   it('should generate 32 random bytes', function(done) {

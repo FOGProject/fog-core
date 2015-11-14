@@ -1,6 +1,6 @@
 var assert = require('assert');
 var async  = require('async');
-var encode = require('../libraries/encode.js')
+var encode = require('../libraries/encode.js');
 
 describe('encode#hex', function() {
   it('should hex encode test vectors', function(done) {
