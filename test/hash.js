@@ -3,9 +3,13 @@ var fs      = require('fs');
 var fsExtra = require('fs-extra');
 var async   = require('async');
 var hash    = require('../libraries/hash.js');
-var vectors = require('hash-test-vectors');
 var forge   = require('node-forge');
 var path    = require('path');
+
+
+
+var vectors = require(path.join(__dirname, '/hash/', 'vectors.json'));
+var hmacs = require(path.join(__dirname, '/hash/', 'hmacs.json'));
 
 var testDir = path.join(__dirname, '/vectors/');
 
@@ -51,6 +55,26 @@ var testFileHash = function(vectorType, done) {
     calls.push(function(callback) {
       var file = path.join(testDir, i + '.dat');
       hash.file[vectorType](file, function(err, result) {
+        assert(!err);
+        assert(result === v[vectorType]);
+        callback();
+      });
+    });
+  });
+  async.parallel(calls, function(err) {
+    done();
+  });
+}
+
+var testHMAC = function(vectorType, done) {
+  var calls = [];
+
+  hmacs.forEach(function(v, i) {
+    calls.push(function(callback) {
+      var data = forge.util.hexToBytes(v.data);
+      var key  = forge.util.hexToBytes(v.key);
+
+      hash.hmac(vectorType, key, data, function(err, result) {
         assert(!err);
         assert(result === v[vectorType]);
         callback();
@@ -119,5 +143,26 @@ describe('hash#sha512', function() {
 describe('hash#sha512-file', function() {
   it('should sha512 hash test vector files', function(done) {
     testFileHash('sha512', done);
+  });
+});
+
+
+// HMACS
+
+describe('hash#hmac-md5', function() {
+  it('should hmac md5 hash test vectors', function(done) {
+    testHMAC('md5', done);
+  });
+});
+
+describe('hash#hmac-sha1', function() {
+  it('should hmac sha1 hash test vectors', function(done) {
+    testHMAC('sha1', done);
+  });
+});
+
+describe('hash#hmac-sha256', function() {
+  it('should hmac sha256 hash test vectors', function(done) {
+    testHMAC('sha256', done);
   });
 });
