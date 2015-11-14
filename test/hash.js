@@ -11,23 +11,32 @@ var path    = require('path');
 var vectors = require(path.join(__dirname, '/hash/', 'vectors.json'));
 var hmacs = require(path.join(__dirname, '/hash/', 'hmacs.json'));
 
-var testDir = path.join(__dirname, '/vectors/');
+var vectorsDir = path.join(__dirname, '/vectors/');
+var hmacsDir = path.join(__dirname, '/hmacs/');
 
 before(function() {
   try {
-    fs.mkdirSync(testDir);
+    fs.mkdirSync(vectorsDir);
+    fs.mkdirSync(hmacsDir);
   }
   catch(e) { }
 
   vectors.forEach(function(v, i) {
     var buf = new Buffer(v.input, 'base64');
-    var file = path.join(testDir, i + '.dat');
+    var file = path.join(vectorsDir, i + '.dat');
+    fs.writeFileSync(file, buf);
+  });
+
+  hmacs.forEach(function(v, i) {
+    var buf = new Buffer(v.data, 'hex');
+    var file = path.join(hmacsDir, i + '.dat');
     fs.writeFileSync(file, buf);
   });
 });
 
 after(function() {
-  fsExtra.removeSync(testDir);
+  fsExtra.removeSync(vectorsDir);
+  fsExtra.removeSync(hmacsDir);
 });
 
 var testHash = function(vectorType, done) {
@@ -53,7 +62,7 @@ var testFileHash = function(vectorType, done) {
 
   vectors.forEach(function(v, i) {
     calls.push(function(callback) {
-      var file = path.join(testDir, i + '.dat');
+      var file = path.join(vectorsDir, i + '.dat');
       hash.file[vectorType](file, function(err, result) {
         assert(!err);
         assert(result === v[vectorType]);
@@ -75,6 +84,28 @@ var testHMAC = function(vectorType, done) {
       var key  = forge.util.hexToBytes(v.key);
 
       hash.hmac(vectorType, key, data, function(err, result) {
+        assert(!err);
+        assert(result === v[vectorType]);
+        callback();
+      });
+    });
+  });
+  async.parallel(calls, function(err) {
+    done();
+  });
+}
+
+var testFileHMAC = function(vectorType, done) {
+  var calls = [];
+
+  hmacs.forEach(function(v, i) {
+    calls.push(function(callback) {
+
+      var data = forge.util.hexToBytes(v.data);
+      var key  = forge.util.hexToBytes(v.key);
+      var file = path.join(hmacsDir, i + '.dat');
+
+      hash.file.hmac(vectorType, key, file, function(err, result) {
         assert(!err);
         assert(result === v[vectorType]);
         callback();
@@ -155,14 +186,32 @@ describe('hash#hmac-md5', function() {
   });
 });
 
+describe('hash#hmac-md5-file', function() {
+  it('should hmac md5 hash test vector files', function(done) {
+    testHMAC('md5', done);
+  });
+});
+
 describe('hash#hmac-sha1', function() {
   it('should hmac sha1 hash test vectors', function(done) {
     testHMAC('sha1', done);
   });
 });
 
+describe('hash#hmac-sha1-file', function() {
+  it('should hmac sha1 hash test vector files', function(done) {
+    testHMAC('sha1', done);
+  });
+});
+
 describe('hash#hmac-sha256', function() {
   it('should hmac sha256 hash test vectors', function(done) {
+    testHMAC('sha256', done);
+  });
+});
+
+describe('hash#hmac-sha256-file', function() {
+  it('should hmac sha256 hash test vector files', function(done) {
     testHMAC('sha256', done);
   });
 });
