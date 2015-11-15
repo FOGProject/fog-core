@@ -12,9 +12,4 @@ encode.base64Sync = function(bytes) {
 };
 encode.base64 = async.asyncify(encode.base64Sync);
 
-encode.utf8Sync = function(bytes) {
-  return forge.util.encodeUtf8(bytes);
-};
-encode.utf8 = async.asyncify(encode.utf8Sync);
-
 module.exports = encode;
