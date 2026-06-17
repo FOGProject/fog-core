@@ -8,7 +8,7 @@
     "password-generator": "^2.0.2",
     "path": "^0.12.7",
     "recursive-readdir": "^1.2.1",
-    "uuid": "^2.0.1"
+    "uuid": "~>11.1.1"
   },
   "name": "fog-core",
   "private": true,
