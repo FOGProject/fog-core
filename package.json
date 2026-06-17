@@ -1,14 +1,14 @@
 {
   "dependencies": {
-    "async": "^1.4.2",
+    "async": "^3.2.6",
     "fs": "0.0.2",
-    "fs-extra": "^0.26.2",
-    "mocha": "^2.2.5",
+    "fs-extra": "^11.3.5",
+    "mocha": "^11.7.6",
     "node-forge": "^1.3.2",
-    "password-generator": "^2.0.2",
+    "password-generator": "^3.0.0",
     "path": "^0.12.7",
-    "recursive-readdir": "^1.2.1",
-    "uuid": "~>11.1.1"
+    "recursive-readdir": "^2.2.3",
+    "uuid": "~14.0.0"
   },
   "name": "fog-core",
   "private": true,
